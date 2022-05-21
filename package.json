@@ -9,6 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@compiled/babel-plugin": "^0.15.0",
+    "@compiled/react": "^0.10.4",
+    "@loadable/babel-plugin": "^5.13.2",
+    "@loadable/component": "^5.15.2",
+    "@svgr/webpack": "^6.2.1",
+    "babel-loader": "^8.2.5",
     "next": "12.1.6",
     "react": "18.1.0",
     "react-dom": "18.1.0"
