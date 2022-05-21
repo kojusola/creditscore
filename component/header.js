@@ -1,9 +1,33 @@
 /** @jsxImportSource @compiled/react */
+import React from "react";
+import { useRouter } from "next/router";
+import { useAppContext } from "../context/state";
 import Link from "next/link";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
 export default function Header() {
+  const router = useRouter();
+  const [accountShort, setAccountShort] = React.useState();
+  const { connected, account } = useAppContext();
+  React.useEffect(() => {
+    if (connected && account) {
+      const addressShortner = (address, shorter) => {
+        if (shorter)
+          return `${address.slice(0, 5)}...${address.slice(
+            address.length - 15,
+            address.length - 12
+          )}...${address.slice(address.length - 3, address.length)}`;
+        return `${address.slice(0, 12)}.....${address.slice(
+          address.length - 10,
+          address.length
+        )}`;
+      };
+      setAccountShort(addressShortner(account, true));
+    } else {
+      router.push("/");
+    }
+  }, []);
   return (
     <div css={{ width: "100%" }}>
       <ToastContainer />
@@ -22,6 +46,7 @@ export default function Header() {
             margin: "auto",
             display: "flex",
             justifyContent: "space-between",
+            alignItems: "center",
             fontSize: "28px",
             lineHeight: "38px",
             color: "#181350",
@@ -59,6 +84,9 @@ export default function Header() {
               Generate credit score
             </button>
             <button
+              onClick={() => {
+                router.push("/details");
+              }}
               css={{
                 padding: "18px 71px",
                 marginRight: "30px",
@@ -73,7 +101,7 @@ export default function Header() {
             >
               Merge
             </button>
-            <p>0x234***212***232</p>
+            <p>{accountShort}</p>
           </div>
         </div>
       </div>

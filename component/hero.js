@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
@@ -13,6 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
 export default function Hero() {
+  const router = useRouter();
   const providerOptions = {
     walletlink: {
       package: CoinbaseWalletSDK,
@@ -69,6 +71,7 @@ export default function Hero() {
       if (accounts) setAccount(accounts[0]);
       setNetwork(network);
       toast.success("wallet Connected");
+      router.push("/amount");
     } catch (error) {
       console.error(error);
     }
@@ -79,6 +82,12 @@ export default function Hero() {
   };
 
   const disconnectWallet = async () => {
+    web3ModalRef.current = new Web3Modal({
+      network: "rinkeby",
+      cacheProvider: true,
+      // disableInjectedProvider: true,
+      providerOptions,
+    });
     await web3ModalRef.current.clearCachedProvider();
     refreshState();
     setConnected(false);
