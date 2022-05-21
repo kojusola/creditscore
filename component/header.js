@@ -1,9 +1,12 @@
 /** @jsxImportSource @compiled/react */
 import Link from "next/link";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 export default function Header() {
   return (
     <div css={{ width: "100%" }}>
+      <ToastContainer />
       <div
         css={{
           fontFamily: "Manrope",
