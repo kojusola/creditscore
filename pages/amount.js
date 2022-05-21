@@ -1,7 +1,27 @@
 /** @jsxImportSource @compiled/react */
 import Header from "../component/header";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 
 export default function Amount() {
+  // form validation rules
+  const validationSchema = Yup.object().shape({
+    currency: Yup.string().required("Currency is required"),
+    amountDeposited: Yup.number().required("Amount Deposited is required"),
+    amountReceived: Yup.number().required("Amount to Received is required"),
+  });
+  const formOptions = { resolver: yupResolver(validationSchema) };
+
+  // get functions to build form with useForm() hook
+  const { register, handleSubmit, reset, formState } = useForm(formOptions);
+  const { errors } = formState;
+
+  function onSubmit(data) {
+    // display form data on success
+    alert("SUCCESS!! :-)\n\n" + JSON.stringify(data, null, 4));
+    return false;
+  }
   return (
     <div>
       <Header />
@@ -14,7 +34,8 @@ export default function Amount() {
           minHeight: "100vh",
         }}
       >
-        <div
+        <form
+          onSubmit={handleSubmit(onSubmit)}
           css={{
             maxWidth: "1100px",
             width: "100%",
@@ -28,6 +49,8 @@ export default function Amount() {
           }}
         >
           <select
+            name="currency"
+            {...register("currency")}
             placeholder="Choose currency"
             css={{
               borderRadius: "10px",
@@ -54,8 +77,18 @@ export default function Amount() {
             <option value="" disabled selected hidden>
               Choose currency
             </option>
-            <option value="1">1</option>
+            <option value="Currency1">Currency 1</option>
+            <option value="Currency2">Currency 2</option>
           </select>
+          <div
+            css={{
+              color: "red",
+              fontSize: "16px",
+              lineHeight: "22px",
+            }}
+          >
+            {errors.currency?.message}
+          </div>
           <div
             css={{
               display: "flex",
@@ -91,6 +124,8 @@ export default function Amount() {
               }}
             >
               <input
+                name="amountDeposited"
+                {...register("amountDeposited")}
                 css={{
                   backgroundColor: "transparent",
                   border: "none",
@@ -110,6 +145,15 @@ export default function Amount() {
                 Max
               </p>
             </div>
+          </div>
+          <div
+            css={{
+              color: "red",
+              fontSize: "16px",
+              lineHeight: "22px",
+            }}
+          >
+            {errors.amountDeposited?.message}
           </div>
           <div
             css={{
@@ -146,6 +190,8 @@ export default function Amount() {
               }}
             >
               <input
+                name="amountReceived"
+                {...register("amountReceived")}
                 css={{
                   backgroundColor: "transparent",
                   border: "none",
@@ -154,6 +200,15 @@ export default function Amount() {
                 }}
               ></input>
             </div>
+          </div>
+          <div
+            css={{
+              color: "red",
+              fontSize: "16px",
+              lineHeight: "22px",
+            }}
+          >
+            {errors.amountReceived?.message}
           </div>
           <div
             css={{
@@ -178,7 +233,7 @@ export default function Amount() {
               Approve
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

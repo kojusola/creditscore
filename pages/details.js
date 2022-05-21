@@ -1,8 +1,28 @@
 /** @jsxImportSource @compiled/react */
 import Header from "../component/header";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 
 export default function Details() {
+  // form validation rules
+  const validationSchema = Yup.object().shape({
+    platform: Yup.string().required("Platform is required"),
+    apiKey: Yup.string().required("Api Key is required"),
+    acceptTerms: Yup.bool().oneOf([true], "Accept Ts & Cs is required"),
+  });
+  const formOptions = { resolver: yupResolver(validationSchema) };
+
+  // get functions to build form with useForm() hook
+  const { register, handleSubmit, reset, formState } = useForm(formOptions);
+  const { errors } = formState;
+
+  function onSubmit(data) {
+    // display form data on success
+    alert("SUCCESS!! :-)\n\n" + JSON.stringify(data, null, 4));
+    return false;
+  }
   return (
     <div>
       <Header />
@@ -15,7 +35,8 @@ export default function Details() {
           minHeight: "100vh",
         }}
       >
-        <div
+        <form
+          onSubmit={handleSubmit(onSubmit)}
           css={{
             maxWidth: "892px",
             width: "100%",
@@ -42,7 +63,8 @@ export default function Details() {
               Choose platform
             </p>
             <select
-              placeholder="Choose currency"
+              name="platform"
+              {...register("platform")}
               css={{
                 backgroundColor: "#F4F6FE",
                 width: "100%",
@@ -57,14 +79,24 @@ export default function Details() {
                   border: "none",
                 },
               }}
+              required
             >
-              <option value="1" css={{ height: "60px" }}>
+              <option value="KUCOIN" css={{ height: "60px" }}>
                 KUCOIN
               </option>
-              <option value="2" css={{ height: "60px" }}>
-                KUCOIN
+              <option value="KUCOIN2" css={{ height: "60px" }}>
+                KUCOIN2
               </option>
             </select>
+            <div
+              css={{
+                color: "red",
+                fontSize: "16px",
+                lineHeight: "22px",
+              }}
+            >
+              {errors.platform?.message}
+            </div>
           </div>
           <div css={{ width: "100%", marginBottom: "26px" }}>
             <p
@@ -80,13 +112,26 @@ export default function Details() {
               Enter generated API KEY
             </p>
             <input
+              name="apiKey"
+              {...register("apiKey")}
               css={{
                 backgroundColor: "#F4F6FE",
                 border: "none",
                 height: "100px",
                 width: "100%",
+                padding: "0 30px",
               }}
+              type="password"
             ></input>
+            <div
+              css={{
+                color: "red",
+                fontSize: "16px",
+                lineHeight: "22px",
+              }}
+            >
+              {errors.apiKey?.message}
+            </div>
           </div>
           <div
             css={{
@@ -106,6 +151,9 @@ export default function Details() {
               }}
             >
               <input
+                name="acceptTerms"
+                {...register("acceptTerms")}
+                required
                 type="checkbox"
                 css={{
                   height: "20px",
@@ -130,6 +178,15 @@ export default function Details() {
           </div>
           <div
             css={{
+              color: "red",
+              fontSize: "16px",
+              lineHeight: "22px",
+            }}
+          >
+            {errors.acceptTerms?.message}
+          </div>
+          <div
+            css={{
               display: "flex",
               marginTop: "50px",
               justifyContent: "center",
@@ -151,7 +208,7 @@ export default function Details() {
               Submit
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );
