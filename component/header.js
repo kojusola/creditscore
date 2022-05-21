@@ -69,6 +69,9 @@ export default function Header() {
             }}
           >
             <button
+              onClick={() => {
+                router.push("/dashboard");
+              }}
               css={{
                 padding: "18px 29px",
                 marginRight: "30px",
