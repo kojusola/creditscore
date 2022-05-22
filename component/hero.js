@@ -71,7 +71,7 @@ export default function Hero() {
       if (accounts) setAccount(accounts[0]);
       setNetwork(network);
       toast.success("wallet Connected");
-      router.push("/amount");
+      router.push("/dashboard");
     } catch (error) {
       console.error(error);
     }

@@ -1,15 +1,50 @@
 /** @jsxImportSource @compiled/react */
+import { useAppContext } from "../context/state";
 import Header from "../component/header";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import { crediScore_CONTRACT_ADDRESS, abi } from "../constants";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
+import worldID from "@worldcoin/id"; // If you installed the JS package as a module
 
 export default function Amount() {
+  const { account, library, amountReceived, setAmountReceived } =
+    useAppContext();
+  const getLoan = async (amountGiven) => {
+    try {
+      await worldID
+        .enable()
+        .then(() => {
+          toast.success("Verified successfully");
+        })
+        .catch(() => toast.error("Verification failed"));
+      const crediScoreContract = new Contract(
+        crediScore_CONTRACT_ADDRESS,
+        abi,
+        library
+      );
+      const currentDateTime = new Date();
+      const repaymentDateTime = new Date() + 259200;
+      // call the tokenIds from the contract
+      const amount = await crediScoreContract.takeLoan(
+        account,
+        amountGiven,
+        currentDateTime,
+        repaymentDateTime
+      );
+      setAmountReceived(amount.toString());
+      toast.success("Loan taken successfully");
+    } catch (err) {
+      toast.error("error taking loan");
+      console.error(err);
+    }
+  };
   // form validation rules
   const validationSchema = Yup.object().shape({
     currency: Yup.string().required("Currency is required"),
     amountDeposited: Yup.number().required("Amount Deposited is required"),
-    amountReceived: Yup.number().required("Amount to Received is required"),
   });
   const formOptions = { resolver: yupResolver(validationSchema) };
 
@@ -19,7 +54,12 @@ export default function Amount() {
 
   function onSubmit(data) {
     // display form data on success
+    worldID.init("world-id-container", {
+      enableTelemetry: true,
+      actionId: crediScore_CONTRACT_ADDRESS,
+    });
     alert("SUCCESS!! :-)\n\n" + JSON.stringify(data, null, 4));
+    getLoan(data.amountDeposited);
     return false;
   }
   return (
@@ -189,26 +229,19 @@ export default function Amount() {
                 justifyContent: "space-between",
               }}
             >
-              <input
+              <div
                 name="amountReceived"
-                {...register("amountReceived")}
                 css={{
                   backgroundColor: "transparent",
                   border: "none",
                   height: "100%",
                   width: "100%",
                 }}
-              ></input>
+              >
+                {" "}
+                {amountReceived ? amountReceived : ""}{" "}
+              </div>
             </div>
-          </div>
-          <div
-            css={{
-              color: "red",
-              fontSize: "16px",
-              lineHeight: "22px",
-            }}
-          >
-            {errors.amountReceived?.message}
           </div>
           <div
             css={{

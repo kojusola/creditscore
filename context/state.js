@@ -9,6 +9,8 @@ export function AppWrapper({ children }) {
   const [account, setAccount] = useState();
   const [network, setNetwork] = useState();
   const [signer, setSigner] = useState();
+  const [amountReceived, setAmountReceived] = useState();
+  const [ipfsCid, setIpfsCid] = useState();
 
   let sharedState = {
     connected,
@@ -23,6 +25,10 @@ export function AppWrapper({ children }) {
     setNetwork,
     signer,
     setSigner,
+    amountReceived,
+    setAmountReceived,
+    ipfsCid,
+    setIpfsCid,
   };
 
   return (

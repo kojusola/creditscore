@@ -1,12 +1,48 @@
 /** @jsxImportSource @compiled/react */
+import { useAppContext } from "../context/state";
 import React from "react";
 import Header from "../component/header";
 import Link from "next/link";
-import Download from "../images/download.svg";
+import Download from "../images/dowload2.svg";
+import Upload from "../images/upload.svg";
 import Pdf from "react-to-pdf";
+import { Web3Storage } from "web3.storage";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 export default function List() {
+  const { ipfsCid, setIpfsCid } = useAppContext();
   const ref = React.createRef();
+
+  async function storeFiles(files) {
+    const client = makeStorageClient();
+    console.log(2);
+    const cid = await client.put(files);
+    console.log(3);
+    setIpfsCid(cid);
+    return cid;
+  }
+
+  const uploadFile = async (e) => {
+    if (e.target.files.length > 0) {
+      toast.success("File uploaded to website");
+      toast.success("uploading to ipfs in progress");
+      try {
+        const cid = await storeFiles(e.target.files);
+        console.log(cid);
+        toast.success("uploading to ipfs successful");
+      } catch {
+        toast.error("uploading to ipfs failed");
+      }
+    }
+  };
+
+  function makeStorageClient() {
+    console.log(1);
+    return new Web3Storage({
+      token: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDM0RkE5MjdCRDIzMjg4YzZkQmJlZDViODYxMDk5RTgxODJBMEQ0NGQiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NTMyMjMzNDI0NjEsIm5hbWUiOiJhZGViYXlvIn0.OLidIiQnaV2jdj-0FDS2kBisY00bIT2qX5giUQ9dN-E`,
+    });
+  }
 
   const options = {
     orientation: "landscape",
@@ -126,7 +162,7 @@ export default function List() {
           >
             {content.map((item, index) => {
               return (
-                <div key={item} css={{ padding: "35px 0px", display: "flex" }}>
+                <div key={index} css={{ padding: "35px 0px", display: "flex" }}>
                   <div
                     key={index}
                     css={{
@@ -225,11 +261,63 @@ export default function List() {
                   alignItems: "center",
                 }}
               >
-                <p css={{ margin: "0", marginRight: "32px" }}>Export report</p>
+                <input
+                  type="file"
+                  css={{
+                    display: "none",
+                    width: "100%",
+                    height: "100%",
+                    border: "none",
+                  }}
+                />
+                <p css={{ margin: "0", marginRight: "32px" }}>
+                  Download report
+                </p>
                 <Download />
               </button>
             )}
           </Pdf>
+          <button
+            css={{
+              padding: "18px 20px",
+              marginRight: "30px",
+              color: "#8772FE",
+              backgroundColor: "#FFFFFF",
+              borderRadius: "5px",
+              fontSize: "24px",
+              lineHeight: "33px",
+              fontWeight: "600",
+              border: "1px solid #8772FE",
+              display: "flex",
+              alignItems: "center",
+              position: "relative",
+            }}
+          >
+            <input
+              onChange={(e) => {
+                uploadFile(e);
+              }}
+              type="file"
+              css={{
+                width: "100%",
+                height: "100%",
+                opacity: "0",
+                position: "absolute",
+              }}
+            />
+            <p css={{ margin: "0", marginRight: "32px" }}>Export report</p>
+            <Upload />
+          </button>
+        </div>
+        <div
+          css={{
+            display: "flex",
+            width: "100%",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {ipfsCid && <p> Ipfs CID for report: {ipfsCid}</p>}
         </div>
       </div>
     </div>
