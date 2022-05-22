@@ -28,6 +28,7 @@
     "react-chartjs-2": "^4.1.0",
     "react-dom": "18.1.0",
     "react-hook-form": "^7.31.2",
+    "react-to-pdf": "^0.0.14",
     "react-toastify": "^9.0.1",
     "web3modal": "^1.9.7",
     "yup": "^0.32.11"

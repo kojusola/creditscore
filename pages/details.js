@@ -1,11 +1,13 @@
 /** @jsxImportSource @compiled/react */
 import Header from "../component/header";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 
 export default function Details() {
+  const router = useRouter();
   // form validation rules
   const validationSchema = Yup.object().shape({
     platform: Yup.string().required("Platform is required"),
@@ -21,6 +23,7 @@ export default function Details() {
   function onSubmit(data) {
     // display form data on success
     alert("SUCCESS!! :-)\n\n" + JSON.stringify(data, null, 4));
+    router.push("/dashboard");
     return false;
   }
   return (

@@ -70,24 +70,63 @@ export default function Header() {
           >
             <button
               onClick={() => {
-                router.push("/dashboard");
+                router.push("/amount");
               }}
               css={{
-                padding: "18px 29px",
+                padding: "18px 53px",
                 marginRight: "30px",
-                backgroundColor: "#8772FE",
-                color: "#FFFFFF",
+                backgroundColor: `${
+                  router.pathname === "/amount" ? "transparent" : "#8772FE"
+                }`,
+                color: `${
+                  router.pathname === "/amount" ? "#8772FE" : "#FFFFFF"
+                }`,
                 borderRadius: "5px",
                 fontSize: "24px",
                 lineHeight: "33px",
                 fontWeight: "600",
-                border: "none",
+                border: `${
+                  router.pathname === "/amount" ? "1px solid #8772FE" : "none"
+                }`,
                 ":hover": {
-                  backgroundColor: "rgba(135, 114, 254, 0.8)",
+                  backgroundColor: `${
+                    router.pathname === "/amount"
+                      ? "rgba(146, 128, 247, 0.14)"
+                      : "rgba(135, 114, 254, 0.8)"
+                  }`,
                 },
               }}
             >
-              Generate credit score
+              Take loan
+            </button>
+            <button
+              onClick={() => {
+                router.push("/list");
+              }}
+              css={{
+                padding: "18px 29px",
+                marginRight: "30px",
+                backgroundColor: `${
+                  router.pathname === "/list" ? "transparent" : "#8772FE"
+                }`,
+                color: `${router.pathname === "/list" ? "#8772FE" : "#FFFFFF"}`,
+                borderRadius: "5px",
+                fontSize: "24px",
+                lineHeight: "33px",
+                fontWeight: "600",
+                border: `${
+                  router.pathname === "/list" ? "1px solid #8772FE" : "none"
+                }`,
+                ":hover": {
+                  backgroundColor: `${
+                    router.pathname === "/list"
+                      ? "rgba(146, 128, 247, 0.14)"
+                      : "rgba(135, 114, 254, 0.8)"
+                  }`,
+                },
+              }}
+            >
+              Generate report
             </button>
             <button
               onClick={() => {
@@ -96,15 +135,25 @@ export default function Header() {
               css={{
                 padding: "18px 71px",
                 marginRight: "30px",
-                backgroundColor: "#8772FE",
-                color: "#FFFFFF",
+                backgroundColor: `${
+                  router.pathname === "/details" ? "transparent" : "#8772FE"
+                }`,
+                color: `${
+                  router.pathname === "/details" ? "#8772FE" : "#FFFFFF"
+                }`,
                 borderRadius: "5px",
                 fontSize: "24px",
                 lineHeight: "33px",
                 fontWeight: "600",
-                border: "none",
+                border: `${
+                  router.pathname === "/details" ? "1px solid #8772FE" : "none"
+                }`,
                 ":hover": {
-                  backgroundColor: "rgba(135, 114, 254, 0.8)",
+                  backgroundColor: `${
+                    router.pathname === "/details"
+                      ? "rgba(146, 128, 247, 0.14)"
+                      : "rgba(135, 114, 254, 0.8)"
+                  }`,
                 },
               }}
             >
