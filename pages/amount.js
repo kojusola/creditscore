@@ -21,22 +21,22 @@ export default function Amount() {
           toast.success("Verified successfully");
         })
         .catch(() => toast.error("Verification failed"));
-      const crediScoreContract = new Contract(
-        crediScore_CONTRACT_ADDRESS,
-        abi,
-        library
-      );
-      const currentDateTime = new Date();
-      const repaymentDateTime = new Date() + 259200;
-      // call the tokenIds from the contract
-      const amount = await crediScoreContract.takeLoan(
-        account,
-        amountGiven,
-        currentDateTime,
-        repaymentDateTime
-      );
-      setAmountReceived(amount.toString());
-      toast.success("Loan taken successfully");
+      // const crediScoreContract = new Contract(
+      //   crediScore_CONTRACT_ADDRESS,
+      //   abi,
+      //   library
+      // );
+      // const currentDateTime = new Date();
+      // const repaymentDateTime = new Date() + 259200;
+      // // call the tokenIds from the contract
+      // const amount = await crediScoreContract.takeLoan(
+      //   account,
+      //   amountGiven,
+      //   currentDateTime,
+      //   repaymentDateTime
+      // );
+      // setAmountReceived(amount.toString());
+      // toast.success("Loan taken successfully");
     } catch (err) {
       toast.error("error taking loan");
       console.error(err);
