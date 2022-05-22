@@ -1,8 +1,11 @@
 /** @jsxImportSource @compiled/react */
 import Header from "../component/header";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
+
 import {
-  Chart,
+  Chart as ChartJs,
   LineElement,
   PointElement,
   ArcElement,
@@ -13,9 +16,10 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
+
 import { Line, Doughnut } from "react-chartjs-2";
 
-Chart.register(
+ChartJs.register(
   LineElement,
   PointElement,
   ArcElement,
@@ -49,43 +53,75 @@ export default function Dashboard() {
     },
     cutout: 100,
   };
-  const data2 = {
-    labels: ["1", "5", "10", "15", "20", "25", "30"],
-    datasets: [
-      {
-        label: "My First Dataset",
-        data: ["70", "30", "40", "50", "60", "70", "30"],
-        fill: false,
-        borderColor: "rgba(66, 47, 138, 0.87)",
-        tension: 0.1,
+  // const data2 = {
+  //   labels: ["1", "5", "10", "15", "20", "25", "30"],
+  //   datasets: [
+  //     {
+  //       label: "My First Dataset",
+  //       data: ["70", "30", "40", "50", "60", "70", "30"],
+  //       fill: false,
+  //       borderColor: "rgba(66, 47, 138, 0.87)",
+  //       tension: 0.1,
+  //     },
+  //     {
+  //       label: "My Second Dataset",
+  //       data: ["30", "40", "35", "52", "60", "45", "30"],
+  //       fill: false,
+  //       borderColor: "#ECE9F1",
+  //       tension: 0.1,
+  //     },
+  //   ],
+  // };
+  // const options2 = {
+  //   plugins: {
+  //     legend: {
+  //       display: "false",
+  //     },
+  //   },
+  //   elements: {
+  //     point: {
+  //       radius: 0,
+  //       hitRadius: 0,
+  //     },
+  //   },
+  //   scales: {
+  //     xAxis: {
+  //       display: true,
+  //     },
+  //   },
+  // };
+
+  const apex_options = {
+    chart: {
+      id: "apexchart-example",
+      toolbar: {
+        show: false,
       },
-      {
-        label: "My Second Dataset",
-        data: ["30", "40", "35", "52", "60", "45", "30"],
-        fill: false,
-        borderColor: "#ECE9F1",
-        tension: 0.1,
-      },
+    },
+    xaxis: {
+      categories: ["1", "5", "10", "15", "20", "25", "30"],
+    },
+    stroke: {
+      curve: "smooth",
+      width: 2,
+    },
+    colors: [
+      "rgba(66, 47, 138, 0.87)",
+      "#ECE9F1",
+      "rgba(66, 47, 138, 0.87)",
+      "#ECE9F1",
     ],
   };
-  const options2 = {
-    plugins: {
-      legend: {
-        display: "false",
-      },
+  const apex_series = [
+    {
+      name: "series-1",
+      data: ["70", "30", "40", "50", "60", "70", "30"],
     },
-    elements: {
-      point: {
-        radius: 0,
-        hitRadius: 0,
-      },
+    {
+      name: "series-1",
+      data: ["30", "40", "35", "52", "60", "45", "30"],
     },
-    scales: {
-      xAxis: {
-        display: true,
-      },
-    },
-  };
+  ];
   return (
     <div>
       <Header />
@@ -278,7 +314,7 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-          <div css={{ width: "100%" }}>
+          <div css={{ width: "100%", marginTop: "42px" }}>
             <p
               css={{
                 fontSize: "20px",
@@ -291,7 +327,13 @@ export default function Dashboard() {
               Chart
             </p>
             <div css={{ backgroundColor: "#F4F6FE", padding: "17px 75px" }}>
-              <Line data={data2} width={100} height={40} options={options2} />
+              {/* <Line data={data2} width={100} height={40} options={options2} /> */}
+              <ApexCharts
+                options={apex_options}
+                series={apex_series}
+                type="line"
+                height={290}
+              />
             </div>
           </div>
         </div>

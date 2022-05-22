@@ -82,6 +82,9 @@ export default function Header() {
                 lineHeight: "33px",
                 fontWeight: "600",
                 border: "none",
+                ":hover": {
+                  backgroundColor: "rgba(135, 114, 254, 0.8)",
+                },
               }}
             >
               Generate credit score
@@ -100,6 +103,9 @@ export default function Header() {
                 lineHeight: "33px",
                 fontWeight: "600",
                 border: "none",
+                ":hover": {
+                  backgroundColor: "rgba(135, 114, 254, 0.8)",
+                },
               }}
             >
               Merge
