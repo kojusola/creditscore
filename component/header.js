@@ -57,7 +57,7 @@ export default function Header() {
             href="/"
             css={{ fontSize: "28px", lineHeight: "38px", color: "#181350" }}
           >
-            CrediScore
+            LendingScore
           </Link>
           <div
             css={{
